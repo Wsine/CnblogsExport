@@ -1,4 +1,8 @@
 {
-    "username": "your_cnblogs_username",
-    "password": "your_cnblogs_password"
+    "userInfo": {
+        "username": "your_cnblogs_username",
+        "password": "your_cnblogs_password"
+    },
+    "outputDir": "Blogs",
+    "webDriver": "Chrome"
 }

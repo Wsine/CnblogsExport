@@ -9,14 +9,27 @@ class CnblogsExport(object):
     An Exportor for cnblogs.com
     """
 
-    def __init__(self, userInfo):
+    def __init__(self, config):
         """
         Return a CnblogsExport object with user name and passowrd for login
         """
-        self.userInfo = userInfo
-        self.driver = webdriver.Chrome()
+        self.userInfo = config['userInfo']
+        self.outputDir = config['outputDir']
+        self.driver = self.get_web_driver(config['webDriver'])
         self.driver.implicitly_wait(10)
         self.driver.maximize_window()
+
+    def get_web_driver(self, webDriver):
+        if webDriver == 'Chrome':
+            return webdriver.Chrome()
+        elif webDriver == 'Edge':
+            return webdriver.Edge()
+        elif webDriver == 'Firefox':
+            return webdriver.Firefox()
+        elif webDriver == 'Safari':
+            return webdriver.Safari()
+        else:
+            return webdriver.Chrome()
 
     def login(self):
         self.driver.get('https://passport.cnblogs.com/user/signin')
