@@ -3,8 +3,9 @@
 from selenium import webdriver
 from time import sleep
 import json
+import os
 
-class CnblogsExport(object):
+class CnblogsWebExport(object):
     """
     An Exportor for cnblogs.com
     """
@@ -45,7 +46,27 @@ class CnblogsExport(object):
         text = self.driver.find_element_by_tag_name('body').text
         return json.loads(text)
 
+    def ensure_directory(self, categoryName):
+        directory = self.outputDir + '/' + categoryName + '/'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        return directory
+
+    def traverse_categorys(self, categorys):
+        for category in categorys:
+            dir = ensure_directory(category['Title'])
+            url = 'https://i.cnblogs.com/posts?categoryid=' + category['CategoryId']
+            self.driver.get(url)
+            # TODO: grap postid
+
+
     def run(self):
         self.login()
-        print(self.get_all_categoryIds())
+        categorys = self.get_all_categoryIds()
+
+if __name__ == '__main__':
+    with open('config.json') as configFile:
+        config = json.loads(configFile.read())
+    export = CnblogsWebExport(config)
+    export.run()
 
